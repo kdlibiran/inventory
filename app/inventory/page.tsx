@@ -1,6 +1,6 @@
-import Dashboard from "@/components/Dashboard";
-import AuthButton from "../components/AuthButton";
+import AuthButton from "@/components/AuthButton";
 import { createClient } from "@/utils/supabase/server";
+import InvTable from "@/components/InvTable";
 export const dynamic = "force-dynamic";
 import Link from "next/link";
 
@@ -27,7 +27,7 @@ export default async function Index() {
           {isSupabaseConnected && <AuthButton />}
         </div>
       </nav>
-      {isSupabaseConnected && <Dashboard />}
+      {isSupabaseConnected && <InvTable />}
     </div>
   );
 }
