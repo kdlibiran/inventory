@@ -1,3 +1,4 @@
+import { createClient } from "@/utils/supabase/server";
 import {
   Table,
   TableBody,
@@ -7,11 +8,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import {
-  getLowStock,
-  getNearExpiry,
-  getTopSales,
-} from "@/utils/supabase/serverFunctions";
 
 interface Item {
   id: number;
@@ -23,9 +19,27 @@ interface Item {
 }
 
 export default async function Dashboard() {
-  const lowStock: Item[] = await getLowStock();
-  const nearExpiry: Item[] = await getNearExpiry();
-  const topSales: Item[] = await getTopSales();
+  const supabase = createClient();
+
+  const { data: lowStock, error: lowStockError } = await supabase
+    .from("items")
+    .select()
+    .gte("quantity", 0)
+    .order("quantity", { ascending: true })
+    .limit(5);
+
+  const { data: nearExpiry, error: nearExpiryError } = await supabase
+    .from("items")
+    .select()
+    .order("expiry", { ascending: true })
+    .limit(5);
+
+  const { data: topSales, error: topSalesError } = await supabase
+    .from("items")
+    .select()
+    .gte("sales", 0)
+    .order("sales", { ascending: false })
+    .limit(5);
 
   return (
     <div className="grid grid-cols-6 gap-4 w-max">

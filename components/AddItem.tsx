@@ -4,7 +4,6 @@ import { createClient } from "@/utils/supabase/client";
 
 export default function AddItem() {
   const [name, setName] = useState("");
-  const [quantity, setQuantity] = useState("");
   const [price, setPrice] = useState("");
   const [loading, setLoading] = useState(false);
   const handleSubmit = async (e: any) => {
@@ -15,14 +14,14 @@ export default function AddItem() {
       const { data, error } = await supabase.from("items").insert([
         {
           name,
-          quantity,
+          quantity: 0,
+          sales: 0,
           price,
         },
       ]);
       if (error) throw error;
       alert("Item added successfully!");
       setName("");
-      setQuantity("");
       setPrice("");
       window.location.reload();
     } catch (error: any) {
@@ -42,16 +41,6 @@ export default function AddItem() {
           id="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-        />
-      </div>
-      <div className="flex flex-col space-y-2">
-        <label htmlFor="quantity">Quantity</label>
-        <input
-          className="border border-gray-300 rounded-md h-11"
-          type="number"
-          id="quantity"
-          value={quantity}
-          onChange={(e) => setQuantity(e.target.value)}
         />
       </div>
       <div className="flex flex-col space-y-2">
