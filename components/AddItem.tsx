@@ -24,6 +24,7 @@ export default function AddItem() {
       setName("");
       setQuantity("");
       setPrice("");
+      window.location.reload();
     } catch (error: any) {
       alert(error.message);
     } finally {

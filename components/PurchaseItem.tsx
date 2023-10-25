@@ -56,6 +56,7 @@ export default function PurchaseItem({ id }: { id: number }) {
       alert("Purchase Record added successfully!");
       setQuantity("");
       setExpiry("");
+      window.location.reload();
     } catch (error: any) {
       alert(error.message);
     } finally {

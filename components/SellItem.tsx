@@ -89,6 +89,7 @@ export default function SellItem({ id }: { id: number }) {
 
       alert("Sale Record added successfully!");
       setQuantity("");
+      window.location.reload();
     } catch (error: any) {
       alert(error.message);
     } finally {
