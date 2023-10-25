@@ -1,7 +1,3 @@
-"use client";
-
-import { createClient } from "@/utils/supabase/client";
-import { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -10,8 +6,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import {
+  getLowStock,
+  getNearExpiry,
+  getTopSales,
+} from "@/utils/supabase/serverFunctions";
 
 interface Item {
   id: number;
@@ -21,54 +21,11 @@ interface Item {
   sales: number;
   expiry: string;
 }
-export default function Dashboard() {
-  const supabase = createClient();
-  const [lowStock, setLowStock] = useState<Item[]>([]);
-  const [nearExpiry, setNearExpiry] = useState<Item[]>([]);
-  const [topSales, setTopSales] = useState<Item[]>([]);
-  const [loading, setLoading] = useState(false);
 
-  const fetchItems = async () => {
-    try {
-      setLoading(true);
-      const { data: lowStockData, error: lowStockError } = await supabase
-        .from("items")
-        .select()
-        .order("quantity", { ascending: true })
-        .limit(5);
-
-      if (lowStockError) throw lowStockError;
-      setLowStock(lowStockData);
-
-      const { data: nearExpiryData, error: nearExpiryError } = await supabase
-        .from("items")
-        .select()
-        .order("expiry", { ascending: true })
-        .limit(5);
-
-      if (nearExpiryError) throw nearExpiryError;
-      setNearExpiry(nearExpiryData);
-
-      const { data: topSalesData, error: topSalesError } = await supabase
-        .from("items")
-        .select()
-        .order("sales", { ascending: false })
-        .limit(5);
-
-      if (topSalesError) throw topSalesError;
-      setTopSales(topSalesData);
-
-      setLoading(false);
-    } catch (error: any) {
-      alert(error.message);
-    }
-  };
-
-  useEffect(() => {
-    fetchItems();
-  }, []);
-
-  if (loading) return <div>Loading...</div>;
+export default async function Dashboard() {
+  const lowStock: Item[] = await getLowStock();
+  const nearExpiry: Item[] = await getNearExpiry();
+  const topSales: Item[] = await getTopSales();
 
   return (
     <div className="grid grid-cols-6 gap-4 w-max">
@@ -85,7 +42,7 @@ export default function Dashboard() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {lowStock.map((item) => (
+              {lowStock?.map((item: Item) => (
                 <TableRow key={item.id}>
                   <TableCell>{item.name}</TableCell>
                   <TableCell>{item.quantity}</TableCell>
@@ -108,7 +65,7 @@ export default function Dashboard() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {nearExpiry.map((item) => (
+              {nearExpiry?.map((item: Item) => (
                 <TableRow key={item.id}>
                   <TableCell>{item.name}</TableCell>
                   <TableCell>{item.expiry}</TableCell>
@@ -131,7 +88,7 @@ export default function Dashboard() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {topSales.map((item) => (
+              {topSales?.map((item: Item) => (
                 <TableRow key={item.id}>
                   <TableCell>{item.name}</TableCell>
                   <TableCell>{item.sales}</TableCell>
