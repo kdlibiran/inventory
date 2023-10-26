@@ -1,5 +1,4 @@
-import { createClient } from "@/utils/supabase/client";
-import { useEffect, useState } from "react";
+import { createClient } from "@/utils/supabase/server";
 import {
   Table,
   TableBody,
@@ -18,26 +17,12 @@ interface PurchaseData {
   date: string;
 }
 
-export default function PurchaseHistory({ id }: { id: number }) {
+export default async function PurchaseHistory({ id }: { id: number }) {
   const supabase = createClient();
-  const [purchaseData, setPurchaseData] = useState<PurchaseData[]>([]);
-
-  const fetchPurchase = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("purchaserecord")
-        .select()
-        .eq("itemid", id);
-      if (error) throw error;
-      setPurchaseData(data || []);
-    } catch (error: any) {
-      alert(error.message);
-    }
-  };
-
-  useEffect(() => {
-    fetchPurchase();
-  }, []);
+  const { data: purchaseData, error } = await supabase
+    .from("purchaserecord")
+    .select()
+    .eq("itemid", id);
 
   return (
     <Table>
@@ -46,7 +31,7 @@ export default function PurchaseHistory({ id }: { id: number }) {
         <TableHead>Expiry</TableHead>
         <TableHead>Date of Purchase</TableHead>
       </TableRow>
-      {purchaseData.map((data) => (
+      {purchaseData?.map((data) => (
         <TableRow key={data.id}>
           <TableCell>{data.quantity}</TableCell>
           <TableCell>{data.expiry}</TableCell>

@@ -1,5 +1,4 @@
-import { createClient } from "@/utils/supabase/client";
-import { useEffect, useState } from "react";
+import { createClient } from "@/utils/supabase/server";
 import {
   Table,
   TableBody,
@@ -16,26 +15,12 @@ interface SaleData {
   date: string;
 }
 
-export default function SalesHistory({ id }: { id: number }) {
+export default async function SalesHistory({ id }: { id: number }) {
   const supabase = createClient();
-  const [salesData, setSalesData] = useState<SaleData[]>([]);
-
-  const fetchSales = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("salesrecord")
-        .select()
-        .eq("itemid", id);
-      if (error) throw error;
-      setSalesData(data || []);
-    } catch (error: any) {
-      alert(error.message);
-    }
-  };
-
-  useEffect(() => {
-    fetchSales();
-  }, []);
+  const { data: salesData, error } = await supabase
+    .from("salesrecord")
+    .select()
+    .eq("itemid", id);
 
   return (
     <Table>
@@ -43,7 +28,7 @@ export default function SalesHistory({ id }: { id: number }) {
         <TableHead>Sale Quantity</TableHead>
         <TableHead>Date of Sale</TableHead>
       </TableRow>
-      {salesData.map((data) => (
+      {salesData?.map((data) => (
         <TableRow key={data.id}>
           <TableCell>{data.quantity}</TableCell>
           <TableCell>{data.date}</TableCell>

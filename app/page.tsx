@@ -1,7 +1,6 @@
 import Dashboard from "@/components/Dashboard";
 import AuthButton from "../components/AuthButton";
 import { createClient } from "@/utils/supabase/server";
-export const dynamic = "force-dynamic";
 import Link from "next/link";
 
 const canInitSupabaseClient = () => {
