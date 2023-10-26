@@ -74,14 +74,13 @@ export default function SellItem({ id }: { id: number }) {
           buffer = parseInt(quantity) - earliestExpiryData?.currentquantity;
         }
         console.log(supabase);
-        const { data: updatePurchase, error: updatePurchaseError } =
-          await supabase
-            .from("purchaserecord")
-            .update({
-              currentquantity: newCurrentQuantity,
-            })
-            .eq("id", parseInt(earliestExpiryData?.id))
-            .select();
+        const { error: updatePurchaseError } = await supabase
+          .from("purchaserecord")
+          .update({
+            currentquantity: newCurrentQuantity,
+          })
+          .eq("id", parseInt(earliestExpiryData?.id));
+
         if (updatePurchaseError) throw updatePurchaseError;
         console.log(newCurrentQuantity);
       } while (buffer !== 0);
@@ -96,19 +95,16 @@ export default function SellItem({ id }: { id: number }) {
           .limit(1)
           .single();
 
-      if (earliestExpiryError) throw earliestExpiryError;
-
       const newExpiry = earliestExpiryData?.expiry ?? null;
 
-      const { data: update, error: updateError } = await supabase
+      const { error: updateError } = await supabase
         .from("items")
         .update({
           quantity: newQuantity,
           sales: newSales,
           expiry: newExpiry,
         })
-        .eq("id", id)
-        .select();
+        .eq("id", id);
       if (updateError) throw updateError;
 
       window.location.reload();
