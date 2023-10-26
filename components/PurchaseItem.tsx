@@ -12,6 +12,9 @@ export default function PurchaseItem({ id }: { id: number }) {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const supabase = createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
     try {
       setLoading(true);
       const { data, error } = await supabase.from("purchaserecord").insert([
@@ -21,6 +24,7 @@ export default function PurchaseItem({ id }: { id: number }) {
           currentquantity: quantity,
           expiry,
           date,
+          user_id: user?.id,
         },
       ]);
 

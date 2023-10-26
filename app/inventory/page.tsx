@@ -4,7 +4,7 @@ import InvTable from "@/components/InvTable";
 export const dynamic = "force-dynamic";
 import Link from "next/link";
 import Search from "@/components/Search";
-
+import { ScrollArea } from "@/components/ui/scroll-area";
 type searchParams = {
   search: string;
 };
@@ -43,7 +43,9 @@ export default async function inventoryPage({
       </nav>
       <div className="w-full max-w-[70rem] flex flex-col gap-5 items-center pb-10">
         {supabase && <Search />}
-        {supabase && <InvTable items={items as Item[]} />}
+        <ScrollArea className="w-full max-h-screen h-[525 px]">
+          {supabase && <InvTable items={items as Item[]} />}
+        </ScrollArea>
       </div>
     </div>
   );

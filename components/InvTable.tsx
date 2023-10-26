@@ -30,6 +30,7 @@ import PurchaseHistory from "./PurchaseHistory";
 import AddItem from "./AddItem";
 import PurchaseItem from "./PurchaseItem";
 import SellItem from "./SellItem";
+
 interface Item {
   id: number;
   name: string;
@@ -38,6 +39,7 @@ interface Item {
   expiry: string;
   price: number;
 }
+
 export default function InvTable({ items }: { items: Item[] }) {
   return (
     <Table>

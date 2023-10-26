@@ -11,6 +11,9 @@ export default function SellItem({ id }: { id: number }) {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const supabase = createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     const { data: Quantity, error: QuantityError } = await supabase
       .from("items")
@@ -29,6 +32,7 @@ export default function SellItem({ id }: { id: number }) {
           itemid: id,
           quantity,
           date,
+          user_id: user?.id,
         },
       ]);
 
