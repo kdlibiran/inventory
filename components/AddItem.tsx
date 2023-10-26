@@ -20,9 +20,6 @@ export default function AddItem() {
         },
       ]);
       if (error) throw error;
-      alert("Item added successfully!");
-      setName("");
-      setPrice("");
       window.location.reload();
     } catch (error: any) {
       alert(error.message);
@@ -37,6 +34,7 @@ export default function AddItem() {
         <label htmlFor="name">Name</label>
         <input
           className="border border-gray-300 rounded-md h-11"
+          required
           type="text"
           id="name"
           value={name}
@@ -47,6 +45,7 @@ export default function AddItem() {
         <label htmlFor="price">Price</label>
         <input
           className="border border-gray-300 rounded-md h-11"
+          required
           type="number"
           id="price"
           value={price}
@@ -54,11 +53,13 @@ export default function AddItem() {
         />
       </div>
       <div className="flex flex-col space-y-2 items-center pt-3">
-        <input
+        <button
           type="submit"
-          value="Add Item"
           className="border border-gray-300 rounded-md p-2 text-slate-600"
-        />
+          disabled={loading}
+        >
+          {loading ? "Loading ..." : "Add Item"}
+        </button>
       </div>
     </form>
   );

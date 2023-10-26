@@ -72,7 +72,7 @@ export default function InvTable() {
   }, [name, addOpen]);
 
   return (
-    <div className="w-full max-w-5xl flex flex-col gap-20 items-center">
+    <div className="w-full max-w-[70rem] flex flex-col gap-5 items-center pb-10">
       <div className="flex justify-between w-full">
         <input
           type="text"
@@ -100,10 +100,10 @@ export default function InvTable() {
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
-            <TableHead>Quantity</TableHead>
-            <TableHead>Sales</TableHead>
-            <TableHead>Expiry Date</TableHead>
-            <TableHead>Price</TableHead>
+            <TableHead className="text-center">Quantity</TableHead>
+            <TableHead className="text-center">Sales</TableHead>
+            <TableHead className="text-center">Expiry Date</TableHead>
+            <TableHead className="text-center">Price</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -113,11 +113,13 @@ export default function InvTable() {
               <TableRow key={item.id}>
                 <Dialog>
                   <TableCell className="font-medium">
-                    <DialogTrigger>{item.name}</DialogTrigger>
+                    <DialogTrigger className="text-left">
+                      {item.name}
+                    </DialogTrigger>
                   </TableCell>
                   <DialogContent>
                     <DialogHeader>
-                      <DialogTitle>{item.name}</DialogTitle>
+                      <DialogTitle>{item.name} History</DialogTitle>
                     </DialogHeader>
                     <Tabs defaultValue="Purchase" className="w-[400px]">
                       <TabsList className="grid w-full grid-cols-2">
@@ -147,10 +149,12 @@ export default function InvTable() {
                     </Tabs>
                   </DialogContent>
                 </Dialog>
-                <TableCell>{item.quantity}</TableCell>
-                <TableCell>{item.sales}</TableCell>
-                <TableCell>{item.expiry}</TableCell>
-                <TableCell>Php {item.price}</TableCell>
+                <TableCell className="text-center">{item.quantity}</TableCell>
+                <TableCell className="text-center">{item.sales}</TableCell>
+                <TableCell className="text-center">
+                  {item.expiry ? item.expiry : "N/A"}
+                </TableCell>
+                <TableCell className="text-center">Php {item.price}</TableCell>
                 <TableCell className="space-x-4 text-right">
                   <Dialog>
                     <DialogTrigger className="text-blue-500">

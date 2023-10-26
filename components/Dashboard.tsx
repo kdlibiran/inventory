@@ -42,8 +42,8 @@ export default async function Dashboard() {
     .limit(5);
 
   return (
-    <div className="grid grid-cols-6 gap-4 w-max">
-      <Card className="col-span-2">
+    <div className="flex flex-col gap-4 w-max md:flex-row">
+      <Card className="w-[300px]">
         <CardHeader>
           <CardTitle>Low Stock</CardTitle>
         </CardHeader>
@@ -52,21 +52,21 @@ export default async function Dashboard() {
             <TableHeader>
               <TableRow>
                 <TableHead>Name</TableHead>
-                <TableHead>Quantity</TableHead>
+                <TableHead className="text-center">Quantity</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {lowStock?.map((item: Item) => (
                 <TableRow key={item.id}>
                   <TableCell>{item.name}</TableCell>
-                  <TableCell>{item.quantity}</TableCell>
+                  <TableCell className="text-center">{item.quantity}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </CardContent>
       </Card>
-      <Card className="col-span-2">
+      <Card className="w-[300px]">
         <CardHeader>
           <CardTitle>Near Expiry</CardTitle>
         </CardHeader>
@@ -75,21 +75,21 @@ export default async function Dashboard() {
             <TableHeader>
               <TableRow>
                 <TableHead>Name</TableHead>
-                <TableHead>Expiry</TableHead>
+                <TableHead className="text-center">Expiry</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {nearExpiry?.map((item: Item) => (
                 <TableRow key={item.id}>
                   <TableCell>{item.name}</TableCell>
-                  <TableCell>{item.expiry}</TableCell>
+                  <TableCell className="text-center">{item.expiry}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </CardContent>
       </Card>
-      <Card className="col-span-2">
+      <Card className="w-[300px]">
         <CardHeader>
           <CardTitle>Top Sales</CardTitle>
         </CardHeader>
@@ -98,14 +98,14 @@ export default async function Dashboard() {
             <TableHeader>
               <TableRow>
                 <TableHead>Name</TableHead>
-                <TableHead>Sales</TableHead>
+                <TableHead className="text-center">Sales</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {topSales?.map((item: Item) => (
                 <TableRow key={item.id}>
                   <TableCell>{item.name}</TableCell>
-                  <TableCell>{item.sales}</TableCell>
+                  <TableCell className="text-center">{item.sales}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

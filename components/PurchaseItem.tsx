@@ -53,9 +53,6 @@ export default function PurchaseItem({ id }: { id: number }) {
         })
         .eq("id", id);
 
-      alert("Purchase Record added successfully!");
-      setQuantity("");
-      setExpiry("");
       window.location.reload();
     } catch (error: any) {
       alert(error.message);
@@ -70,6 +67,7 @@ export default function PurchaseItem({ id }: { id: number }) {
         <label htmlFor="quantity">Quantity</label>
         <input
           className="border border-gray-300 rounded-md h-11"
+          required
           type="number"
           id="quantity"
           value={quantity}
@@ -80,6 +78,7 @@ export default function PurchaseItem({ id }: { id: number }) {
         <label htmlFor="expiry">Expiry</label>
         <input
           className="border border-gray-300 rounded-md h-11"
+          required
           type="date"
           id="expiry"
           value={expiry}
@@ -90,6 +89,7 @@ export default function PurchaseItem({ id }: { id: number }) {
         <button
           className="bg-blue-500 text-white rounded-md h-11"
           type="submit"
+          disabled={loading}
         >
           {loading ? "Loading..." : "Add Purchase Record"}
         </button>

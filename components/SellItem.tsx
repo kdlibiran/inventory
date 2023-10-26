@@ -12,6 +12,16 @@ export default function SellItem({ id }: { id: number }) {
     e.preventDefault();
     const supabase = createClient();
 
+    const { data: Quantity, error: QuantityError } = await supabase
+      .from("items")
+      .select("quantity")
+      .eq("id", id)
+      .single();
+
+    if (parseInt(quantity) > Quantity?.quantity) {
+      alert("Not enough stock!");
+      return;
+    }
     try {
       setLoading(true);
       const { data, error } = await supabase.from("salesrecord").insert([
@@ -87,8 +97,6 @@ export default function SellItem({ id }: { id: number }) {
         })
         .eq("id", id);
 
-      alert("Sale Record added successfully!");
-      setQuantity("");
       window.location.reload();
     } catch (error: any) {
       alert(error.message);
@@ -103,6 +111,7 @@ export default function SellItem({ id }: { id: number }) {
         <label htmlFor="quantity">Quantity</label>
         <input
           className="border border-gray-300 rounded-md h-11"
+          required
           type="number"
           id="quantity"
           value={quantity}
@@ -113,6 +122,7 @@ export default function SellItem({ id }: { id: number }) {
         <button
           className="bg-red-500 text-white rounded-md py-2 px-4"
           type="submit"
+          disabled={loading}
         >
           {loading ? "Loading..." : "Add Sales Record"}
         </button>
