@@ -21,6 +21,8 @@ export default function SellItem({ id }: { id: number }) {
       .eq("id", id)
       .single();
 
+    if (QuantityError) throw QuantityError;
+
     if (parseInt(quantity) > Quantity?.quantity) {
       alert("Not enough stock!");
       return;
@@ -35,6 +37,8 @@ export default function SellItem({ id }: { id: number }) {
           user_id: user?.id,
         },
       ]);
+
+      if (error) throw error;
 
       const { data: itemData, error: itemError } = await supabase
         .from("items")
@@ -70,13 +74,15 @@ export default function SellItem({ id }: { id: number }) {
           buffer = parseInt(quantity) - earliestExpiryData?.currentquantity;
         }
         console.log(supabase);
-        await supabase
-          .from("purchaserecord")
-          .update({
-            currentquantity: newCurrentQuantity,
-          })
-          .eq("id", parseInt(earliestExpiryData?.id));
-
+        const { data: updatePurchase, error: updatePurchaseError } =
+          await supabase
+            .from("purchaserecord")
+            .update({
+              currentquantity: newCurrentQuantity,
+            })
+            .eq("id", parseInt(earliestExpiryData?.id))
+            .select();
+        if (updatePurchaseError) throw updatePurchaseError;
         console.log(newCurrentQuantity);
       } while (buffer !== 0);
 
@@ -90,16 +96,20 @@ export default function SellItem({ id }: { id: number }) {
           .limit(1)
           .single();
 
-      const newExpiry = earliestExpiryData?.expiry ?? "";
+      if (earliestExpiryError) throw earliestExpiryError;
 
-      await supabase
+      const newExpiry = earliestExpiryData?.expiry ?? null;
+
+      const { data: update, error: updateError } = await supabase
         .from("items")
         .update({
           quantity: newQuantity,
           sales: newSales,
           expiry: newExpiry,
         })
-        .eq("id", id);
+        .eq("id", id)
+        .select();
+      if (updateError) throw updateError;
 
       window.location.reload();
     } catch (error: any) {

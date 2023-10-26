@@ -12,9 +12,8 @@ export default function AddItem() {
     const {
       data: { user },
     } = await supabase.auth.getUser();
-
+    setLoading(true);
     try {
-      setLoading(true);
       const { data, error } = await supabase.from("items").insert([
         {
           name,

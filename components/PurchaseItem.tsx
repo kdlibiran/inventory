@@ -28,7 +28,8 @@ export default function PurchaseItem({ id }: { id: number }) {
         },
       ]);
 
-      //get earliest expiry date from purchase record
+      if (error) throw error;
+
       const { data: earliestExpiryData, error: earliestExpiryError } =
         await supabase
           .from("purchaserecord")
@@ -38,6 +39,8 @@ export default function PurchaseItem({ id }: { id: number }) {
           .gt("currentquantity", 0)
           .limit(1)
           .single();
+
+      if (earliestExpiryError) throw earliestExpiryError;
 
       const { data: itemData, error: itemError } = await supabase
         .from("items")
@@ -49,13 +52,15 @@ export default function PurchaseItem({ id }: { id: number }) {
       const newExpiry = earliestExpiryData?.expiry ?? "";
       const newQuantity = (itemData?.quantity ?? 0) + parseInt(quantity);
 
-      await supabase
+      const { data: update, error: updateError } = await supabase
         .from("items")
         .update({
           expiry: newExpiry,
           quantity: newQuantity,
         })
         .eq("id", id);
+
+      if (updateError) throw updateError;
 
       window.location.reload();
     } catch (error: any) {
