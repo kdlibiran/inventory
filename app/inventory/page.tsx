@@ -3,17 +3,20 @@ import { createClient } from "@/utils/supabase/server";
 import InvTable from "@/components/InvTable";
 export const dynamic = "force-dynamic";
 import Link from "next/link";
-const canInitSupabaseClient = () => {
-  try {
-    createClient();
-    return true;
-  } catch (e) {
-    return false;
-  }
+
+type Item = {
+  id: number;
+  name: string;
+  quantity: number;
+  sales: number;
+  expiry: string;
+  price: number;
 };
 
 export default async function inventoryPage() {
-  const isSupabaseConnected = canInitSupabaseClient();
+  const supabase = createClient();
+  const { data, error } = await supabase.from("items").select().order("name");
+
   return (
     <div className="flex-1 w-full flex flex-col gap-20 items-center">
       <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
@@ -22,10 +25,10 @@ export default async function inventoryPage() {
             <Link href="/">Home</Link>
             <Link href="/inventory">Inventory</Link>
           </div>
-          {isSupabaseConnected && <AuthButton />}
+          {supabase && <AuthButton />}
         </div>
       </nav>
-      {isSupabaseConnected && <InvTable />}
+      {supabase && <InvTable data={data as Item[]} />}
     </div>
   );
 }

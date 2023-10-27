@@ -1,5 +1,5 @@
 "use client";
-import { createClient } from "@/utils/supabase/client";
+
 import {
   Table,
   TableBody,
@@ -31,7 +31,7 @@ import PurchaseHistory from "./PurchaseHistory";
 import AddItem from "./AddItem";
 import PurchaseItem from "./PurchaseItem";
 import SellItem from "./SellItem";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 interface Item {
   id: number;
   name: string;
@@ -41,23 +41,16 @@ interface Item {
   price: number;
 }
 
-export default function InvTable() {
+export default function InvTable({ data }: { data: Item[] }) {
   const [name, setName] = useState("");
   const [items, setItems] = useState<Item[]>([]);
   const getItems = async () => {
-    const supabase = createClient();
-    const { data: items, error } = await supabase
-      .from("items")
-      .select()
-      .ilike("name", `%${name}%`)
-      .order("name", { ascending: true });
-    if (error) {
-      console.error(error);
+    if (name === "") {
+      setItems(data);
     } else {
-      setItems(items || []);
+      setItems(data.filter((item) => item.name.toLowerCase().includes(name)));
     }
   };
-
   useEffect(() => {
     getItems();
   }, [name]);
