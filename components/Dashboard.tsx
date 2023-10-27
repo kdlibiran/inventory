@@ -23,16 +23,16 @@ export default async function Dashboard() {
 
   const { data, error } = await supabase.from("items").select();
   const lowStock = data
-    ?.sort((a: Item, b: Item) => a.quantity - b.quantity)
-    .filter((item: Item) => item.quantity > 0)
+    ?.filter((item: Item) => item.quantity > 0)
+    .sort((a: Item, b: Item) => a.quantity - b.quantity)
     .slice(0, 8);
   const nearExpiry = data
-    ?.sort((a: Item, b: Item) => a.expiry.localeCompare(b.expiry))
-    .filter((item: Item) => item.expiry)
+    ?.filter((item: Item) => item.expiry)
+    .sort((a: Item, b: Item) => a.expiry.localeCompare(b.expiry))
     .slice(0, 8);
   const topSales = data
-    ?.sort((a: Item, b: Item) => b.sales - a.sales)
-    .filter((item: Item) => item.sales > 0)
+    ?.filter((item: Item) => item.sales > 0)
+    .sort((a: Item, b: Item) => b.sales - a.sales)
     .slice(0, 8);
 
   return (

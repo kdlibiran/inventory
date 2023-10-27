@@ -9,9 +9,6 @@ export default function AddItem() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const supabase = createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
     setLoading(true);
     try {
       const { data, error } = await supabase.from("items").insert([
@@ -20,7 +17,6 @@ export default function AddItem() {
           quantity: 0,
           sales: 0,
           price,
-          user_id: user?.id,
         },
       ]);
       if (error) throw error;
