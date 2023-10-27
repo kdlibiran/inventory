@@ -1,13 +1,4 @@
-"use client";
-
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableCell, TableHead, TableRow } from "@/components/ui/table";
 
 interface PurchaseData {
   id: number;
