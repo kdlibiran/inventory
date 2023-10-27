@@ -1,4 +1,3 @@
-import { createClient } from "@/utils/supabase/server";
 import {
   Table,
   TableBody,
@@ -9,13 +8,12 @@ import {
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Database } from "@/types/supabase";
+import { getItems } from "@/utils/supabase/supabase-server";
 
 type Item = Database["public"]["Tables"]["items"]["Row"];
 
 export default async function Dashboard() {
-  const supabase = createClient();
-
-  const { data, error } = await supabase.from("items").select();
+  const data = await getItems();
   const lowStock = data
     ?.filter((item: Item) => item.quantity >= 0)
     .sort((a: Item, b: Item) => a.quantity - b.quantity)

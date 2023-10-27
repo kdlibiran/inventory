@@ -1,23 +1,22 @@
 import AuthButton from "@/components/AuthButton";
-import { createClient } from "@/utils/supabase/server";
 import InvTable from "@/components/InvTable";
 export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { Database } from "@/types/supabase";
+import {
+  getItems,
+  getPurchaseData,
+  getSalesData,
+} from "@/utils/supabase/supabase-server";
 
 type Item = Database["public"]["Tables"]["items"]["Row"];
 type purchaseData = Database["public"]["Tables"]["purchaserecord"]["Row"];
 type salesData = Database["public"]["Tables"]["salesrecord"]["Row"];
 
 export default async function inventoryPage() {
-  const supabase = createClient();
-  const { data, error } = await supabase.from("items").select().order("name");
-  const { data: purchaseData, error: purchaseError } = await supabase
-    .from("purchaserecord")
-    .select();
-  const { data: salesData, error: salesError } = await supabase
-    .from("salesrecord")
-    .select();
+  const data = await getItems();
+  const purchaseData = await getPurchaseData();
+  const salesData = await getSalesData();
 
   return (
     <div className="flex-1 w-full flex flex-col gap-20 items-center">
@@ -27,10 +26,10 @@ export default async function inventoryPage() {
             <Link href="/">Home</Link>
             <Link href="/inventory">Inventory</Link>
           </div>
-          {supabase && <AuthButton />}
+          {data && <AuthButton />}
         </div>
       </nav>
-      {supabase && (
+      {data && (
         <InvTable
           data={data as Item[]}
           purchaseData={purchaseData as purchaseData[]}
