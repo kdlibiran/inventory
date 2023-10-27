@@ -1,5 +1,5 @@
 "use client";
-import { createClient } from "@/utils/supabase/client";
+
 import {
   Table,
   TableBody,
@@ -11,20 +11,18 @@ import {
 
 interface PurchaseData {
   id: number;
-  itemId: number;
+  itemid: number;
   quantity: number;
-  currentQuantity: number;
+  currentquantity: number;
   expiry: string;
   date: string;
 }
 
-export default async function PurchaseHistory({ id }: { id: number }) {
-  const supabase = createClient();
-  const { data: purchaseData, error } = await supabase
-    .from("purchaserecord")
-    .select()
-    .eq("itemid", id);
-
+export default function PurchaseHistory({
+  purchaseData,
+}: {
+  purchaseData: PurchaseData[];
+}) {
   return (
     <Table>
       <TableRow>

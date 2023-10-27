@@ -4,18 +4,40 @@ import InvTable from "@/components/InvTable";
 export const dynamic = "force-dynamic";
 import Link from "next/link";
 
-type Item = {
+interface Item {
   id: number;
   name: string;
   quantity: number;
   sales: number;
   expiry: string;
   price: number;
-};
+}
+
+interface purchaseData {
+  id: number;
+  itemid: number;
+  quantity: number;
+  currentquantity: number;
+  expiry: string;
+  date: string;
+}
+
+interface salesData {
+  id: number;
+  itemid: number;
+  quantity: number;
+  date: string;
+}
 
 export default async function inventoryPage() {
   const supabase = createClient();
   const { data, error } = await supabase.from("items").select().order("name");
+  const { data: purchaseData, error: purchaseError } = await supabase
+    .from("purchaserecord")
+    .select();
+  const { data: salesData, error: salesError } = await supabase
+    .from("salesrecord")
+    .select();
 
   return (
     <div className="flex-1 w-full flex flex-col gap-20 items-center">
@@ -28,7 +50,13 @@ export default async function inventoryPage() {
           {supabase && <AuthButton />}
         </div>
       </nav>
-      {supabase && <InvTable data={data as Item[]} />}
+      {supabase && (
+        <InvTable
+          data={data as Item[]}
+          purchaseData={purchaseData as purchaseData[]}
+          salesData={salesData as salesData[]}
+        />
+      )}
     </div>
   );
 }

@@ -1,4 +1,5 @@
-import { createClient } from "@/utils/supabase/client";
+"use client";
+
 import {
   Table,
   TableBody,
@@ -10,18 +11,12 @@ import {
 
 interface SaleData {
   id: number;
-  itemId: number;
+  itemid: number;
   quantity: number;
   date: string;
 }
 
-export default async function SalesHistory({ id }: { id: number }) {
-  const supabase = createClient();
-  const { data: salesData, error } = await supabase
-    .from("salesrecord")
-    .select()
-    .eq("itemid", id);
-
+export default function SalesHistory({ salesData }: { salesData: SaleData[] }) {
   return (
     <Table>
       <TableRow>

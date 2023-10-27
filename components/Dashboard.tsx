@@ -21,25 +21,19 @@ interface Item {
 export default async function Dashboard() {
   const supabase = createClient();
 
-  const { data: lowStock, error: lowStockError } = await supabase
-    .from("items")
-    .select()
-    .gte("quantity", 0)
-    .order("quantity", { ascending: true })
-    .limit(5);
-
-  const { data: nearExpiry, error: nearExpiryError } = await supabase
-    .from("items")
-    .select()
-    .order("expiry", { ascending: true })
-    .limit(5);
-
-  const { data: topSales, error: topSalesError } = await supabase
-    .from("items")
-    .select()
-    .gte("sales", 0)
-    .order("sales", { ascending: false })
-    .limit(5);
+  const { data, error } = await supabase.from("items").select();
+  const lowStock = data
+    ?.sort((a: Item, b: Item) => a.quantity - b.quantity)
+    .filter((item: Item) => item.quantity > 0)
+    .slice(0, 8);
+  const nearExpiry = data
+    ?.sort((a: Item, b: Item) => a.expiry.localeCompare(b.expiry))
+    .filter((item: Item) => item.expiry)
+    .slice(0, 8);
+  const topSales = data
+    ?.sort((a: Item, b: Item) => b.sales - a.sales)
+    .filter((item: Item) => item.sales > 0)
+    .slice(0, 8);
 
   return (
     <div className="flex flex-col gap-4 w-max md:flex-row">

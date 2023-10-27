@@ -12,19 +12,11 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SalesHistory from "./SalesHistory";
 import PurchaseHistory from "./PurchaseHistory";
@@ -41,7 +33,31 @@ interface Item {
   price: number;
 }
 
-export default function InvTable({ data }: { data: Item[] }) {
+interface PurchaseData {
+  id: number;
+  itemid: number;
+  quantity: number;
+  currentquantity: number;
+  expiry: string;
+  date: string;
+}
+
+interface SalesData {
+  id: number;
+  itemid: number;
+  quantity: number;
+  date: string;
+}
+
+export default function InvTable({
+  data,
+  purchaseData,
+  salesData,
+}: {
+  data: Item[];
+  purchaseData: PurchaseData[];
+  salesData: SalesData[];
+}) {
   const [name, setName] = useState("");
   const [items, setItems] = useState<Item[]>([]);
   const getItems = async () => {
@@ -93,44 +109,57 @@ export default function InvTable({ data }: { data: Item[] }) {
           {items &&
             items?.map((item) => (
               <TableRow key={item.id}>
-                <Dialog>
-                  <TableCell className="font-medium">
-                    <DialogTrigger className="text-left">
+                <TableCell className="font-medium">
+                  <Dialog>
+                    <DialogTrigger className="text-left font-medium">
                       {item.name}
                     </DialogTrigger>
-                  </TableCell>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>{item.name} History</DialogTitle>
-                    </DialogHeader>
-                    <Tabs defaultValue="Purchase" className="w-[400px]">
-                      <TabsList className="grid w-full grid-cols-2">
-                        <TabsTrigger value="Purchase">Purchase</TabsTrigger>
-                        <TabsTrigger value="Sales">Sales</TabsTrigger>
-                      </TabsList>
-                      <TabsContent value="Purchase">
-                        <Card>
-                          <CardHeader>
-                            <CardTitle>Purchase History</CardTitle>
-                          </CardHeader>
-                          <CardContent className="space-y-2">
-                            <PurchaseHistory id={item.id} />
-                          </CardContent>
-                        </Card>
-                      </TabsContent>
-                      <TabsContent value="Sales">
-                        <Card>
-                          <CardHeader>
-                            <CardTitle>Sales History</CardTitle>
-                          </CardHeader>
-                          <CardContent className="space-y-2">
-                            <SalesHistory id={item.id} />
-                          </CardContent>
-                        </Card>
-                      </TabsContent>
-                    </Tabs>
-                  </DialogContent>
-                </Dialog>
+
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>{item.name} History</DialogTitle>
+                      </DialogHeader>
+                      <Tabs defaultValue="Purchase" className="w-[400px]">
+                        <TabsList className="grid w-full grid-cols-2">
+                          <TabsTrigger value="Purchase">Purchase</TabsTrigger>
+                          <TabsTrigger value="Sales">Sales</TabsTrigger>
+                        </TabsList>
+                        <TabsContent value="Purchase">
+                          <Card>
+                            <CardHeader>
+                              <CardTitle>Purchase History</CardTitle>
+                            </CardHeader>
+                            <CardContent className="space-y-2">
+                              <PurchaseHistory
+                                purchaseData={
+                                  purchaseData.filter(
+                                    (data) => data.itemid === item.id
+                                  ) as PurchaseData[]
+                                }
+                              />
+                            </CardContent>
+                          </Card>
+                        </TabsContent>
+                        <TabsContent value="Sales">
+                          <Card>
+                            <CardHeader>
+                              <CardTitle>Sales History</CardTitle>
+                            </CardHeader>
+                            <CardContent className="space-y-2">
+                              <SalesHistory
+                                salesData={
+                                  salesData.filter(
+                                    (data) => data.itemid === item.id
+                                  ) as SalesData[]
+                                }
+                              />
+                            </CardContent>
+                          </Card>
+                        </TabsContent>
+                      </Tabs>
+                    </DialogContent>
+                  </Dialog>
+                </TableCell>
                 <TableCell className="text-center">{item.quantity}</TableCell>
                 <TableCell className="text-center">{item.sales}</TableCell>
                 <TableCell className="text-center">
