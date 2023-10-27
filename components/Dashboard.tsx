@@ -8,15 +8,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Database } from "@/types/supabase";
 
-interface Item {
-  id: number;
-  name: string;
-  quantity: number;
-  price: number;
-  sales: number;
-  expiry: string;
-}
+type Item = Database["public"]["Tables"]["items"]["Row"];
 
 export default async function Dashboard() {
   const supabase = createClient();

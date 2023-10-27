@@ -24,30 +24,11 @@ import AddItem from "./AddItem";
 import PurchaseItem from "./PurchaseItem";
 import SellItem from "./SellItem";
 import { useEffect, useState } from "react";
-interface Item {
-  id: number;
-  name: string;
-  quantity: number;
-  sales: number;
-  expiry: string;
-  price: number;
-}
+import { Database } from "@/types/supabase";
 
-interface PurchaseData {
-  id: number;
-  itemid: number;
-  quantity: number;
-  currentquantity: number;
-  expiry: string;
-  date: string;
-}
-
-interface SalesData {
-  id: number;
-  itemid: number;
-  quantity: number;
-  date: string;
-}
+type Item = Database["public"]["Tables"]["items"]["Row"];
+type purchaseData = Database["public"]["Tables"]["purchaserecord"]["Row"];
+type salesData = Database["public"]["Tables"]["salesrecord"]["Row"];
 
 export default function InvTable({
   data,
@@ -55,8 +36,8 @@ export default function InvTable({
   salesData,
 }: {
   data: Item[];
-  purchaseData: PurchaseData[];
-  salesData: SalesData[];
+  purchaseData: purchaseData[];
+  salesData: salesData[];
 }) {
   const [name, setName] = useState("");
   const [items, setItems] = useState<Item[]>([]);
@@ -134,7 +115,7 @@ export default function InvTable({
                                 purchaseData={
                                   purchaseData.filter(
                                     (data) => data.itemid === item.id
-                                  ) as PurchaseData[]
+                                  ) as purchaseData[]
                                 }
                               />
                             </CardContent>
@@ -150,7 +131,7 @@ export default function InvTable({
                                 salesData={
                                   salesData.filter(
                                     (data) => data.itemid === item.id
-                                  ) as SalesData[]
+                                  ) as salesData[]
                                 }
                               />
                             </CardContent>

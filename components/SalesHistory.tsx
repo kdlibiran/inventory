@@ -1,11 +1,7 @@
 import { Table, TableCell, TableHead, TableRow } from "@/components/ui/table";
+import { Database } from "@/types/supabase";
 
-interface SaleData {
-  id: number;
-  itemid: number;
-  quantity: number;
-  date: string;
-}
+type SaleData = Database["public"]["Tables"]["salesrecord"]["Row"];
 
 export default function SalesHistory({ salesData }: { salesData: SaleData[] }) {
   return (

@@ -1,18 +1,12 @@
 import { Table, TableCell, TableHead, TableRow } from "@/components/ui/table";
+import { Database } from "@/types/supabase";
 
-interface PurchaseData {
-  id: number;
-  itemid: number;
-  quantity: number;
-  currentquantity: number;
-  expiry: string;
-  date: string;
-}
+type purchaseData = Database["public"]["Tables"]["purchaserecord"]["Row"];
 
 export default function PurchaseHistory({
   purchaseData,
 }: {
-  purchaseData: PurchaseData[];
+  purchaseData: purchaseData[];
 }) {
   return (
     <Table>

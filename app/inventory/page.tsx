@@ -3,31 +3,11 @@ import { createClient } from "@/utils/supabase/server";
 import InvTable from "@/components/InvTable";
 export const dynamic = "force-dynamic";
 import Link from "next/link";
+import { Database } from "@/types/supabase";
 
-interface Item {
-  id: number;
-  name: string;
-  quantity: number;
-  sales: number;
-  expiry: string;
-  price: number;
-}
-
-interface purchaseData {
-  id: number;
-  itemid: number;
-  quantity: number;
-  currentquantity: number;
-  expiry: string;
-  date: string;
-}
-
-interface salesData {
-  id: number;
-  itemid: number;
-  quantity: number;
-  date: string;
-}
+type Item = Database["public"]["Tables"]["items"]["Row"];
+type purchaseData = Database["public"]["Tables"]["purchaserecord"]["Row"];
+type salesData = Database["public"]["Tables"]["salesrecord"]["Row"];
 
 export default async function inventoryPage() {
   const supabase = createClient();
