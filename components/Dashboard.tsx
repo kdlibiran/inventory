@@ -23,7 +23,7 @@ export default async function Dashboard() {
 
   const { data, error } = await supabase.from("items").select();
   const lowStock = data
-    ?.filter((item: Item) => item.quantity > 0)
+    ?.filter((item: Item) => item.quantity >= 0)
     .sort((a: Item, b: Item) => a.quantity - b.quantity)
     .slice(0, 8);
   const nearExpiry = data
