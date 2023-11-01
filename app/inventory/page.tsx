@@ -3,11 +3,7 @@ import InvTable from "@/components/InvTable";
 export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { Database } from "@/types/supabase";
-import {
-  getItems,
-  getPurchaseData,
-  getSalesData,
-} from "@/utils/supabase/supabase-server";
+import { getItems } from "@/utils/supabase/supabase-server";
 
 type Item = Database["public"]["Tables"]["items"]["Row"];
 type purchaseData = Database["public"]["Tables"]["purchaserecord"]["Row"];
@@ -15,8 +11,6 @@ type salesData = Database["public"]["Tables"]["salesrecord"]["Row"];
 
 export default async function inventoryPage() {
   const data = await getItems();
-  const purchaseData = await getPurchaseData();
-  const salesData = await getSalesData();
 
   return (
     <div className="flex-1 w-full flex flex-col gap-20 items-center">
@@ -29,13 +23,7 @@ export default async function inventoryPage() {
           {data && <AuthButton />}
         </div>
       </nav>
-      {data && (
-        <InvTable
-          data={data as Item[]}
-          purchaseData={purchaseData as purchaseData[]}
-          salesData={salesData as salesData[]}
-        />
-      )}
+      {data && <InvTable data={data as Item[]} />}
     </div>
   );
 }

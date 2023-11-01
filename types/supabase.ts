@@ -18,6 +18,8 @@ export interface Database {
           quantity: number;
           sales: number;
           user_id: string;
+          purchaserecord: Database["public"]["Tables"]["purchaserecord"]["Row"][];
+          salesrecord: Database["public"]["Tables"]["salesrecord"]["Row"][];
         };
         Insert: {
           expiry?: string | null;

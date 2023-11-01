@@ -4,22 +4,8 @@ export async function getItems() {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("items")
-    .select("*")
+    .select("*, purchaserecord(*), salesrecord(*)")
     .order("name");
-  if (error) throw error;
-  return data;
-}
-
-export async function getPurchaseData() {
-  const supabase = createClient();
-  const { data, error } = await supabase.from("purchaserecord").select("*");
-  if (error) throw error;
-  return data;
-}
-
-export async function getSalesData() {
-  const supabase = createClient();
-  const { data, error } = await supabase.from("salesrecord").select("*");
   if (error) throw error;
   return data;
 }

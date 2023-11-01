@@ -27,18 +27,8 @@ import { useEffect, useState } from "react";
 import { Database } from "@/types/supabase";
 
 type Item = Database["public"]["Tables"]["items"]["Row"];
-type purchaseData = Database["public"]["Tables"]["purchaserecord"]["Row"];
-type salesData = Database["public"]["Tables"]["salesrecord"]["Row"];
 
-export default function InvTable({
-  data,
-  purchaseData,
-  salesData,
-}: {
-  data: Item[];
-  purchaseData: purchaseData[];
-  salesData: salesData[];
-}) {
+export default function InvTable({ data }: { data: Item[] }) {
   const [name, setName] = useState("");
   const [items, setItems] = useState<Item[]>([]);
   const getItems = async () => {
@@ -112,11 +102,9 @@ export default function InvTable({
                             </CardHeader>
                             <CardContent className="space-y-2">
                               <PurchaseHistory
-                                purchaseData={
-                                  purchaseData.filter(
-                                    (data) => data.itemid === item.id
-                                  ) as purchaseData[]
-                                }
+                                purchaseData={item.purchaserecord.filter(
+                                  (data) => data.itemid === item.id
+                                )}
                               />
                             </CardContent>
                           </Card>
@@ -128,11 +116,9 @@ export default function InvTable({
                             </CardHeader>
                             <CardContent className="space-y-2">
                               <SalesHistory
-                                salesData={
-                                  salesData.filter(
-                                    (data) => data.itemid === item.id
-                                  ) as salesData[]
-                                }
+                                salesData={item.salesrecord.filter(
+                                  (data) => data.itemid === item.id
+                                )}
                               />
                             </CardContent>
                           </Card>
