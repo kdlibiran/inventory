@@ -30,8 +30,8 @@ export default async function Index() {
           <h1 className="text-4xl font-bold mb-4">Inventory Management</h1>
           <p className="text-gray-600 mb-6 text-lg">
             Streamline your business operations with our Inventory Management
-            System. Keep track of products, manage categories, and generate
-            insightful reports seamlessly.
+            System. Keep track of products, know when to restock, know when to
+            order more, and know when products will expire.
           </p>
         </div>
       </div>
