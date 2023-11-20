@@ -17,7 +17,7 @@ export default async function inventoryPage() {
       <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
         <div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm">
           <div className="space-x-4">
-            <Link href="/">Home</Link>
+            <Link href="/home">Home</Link>
             <Link href="/inventory">Inventory</Link>
           </div>
           {data && <AuthButton />}

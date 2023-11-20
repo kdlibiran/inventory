@@ -1,5 +1,5 @@
 import Dashboard from "@/components/Dashboard";
-import AuthButton from "../components/AuthButton";
+import AuthButton from "@/components/AuthButton";
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 
@@ -20,7 +20,7 @@ export default async function Index() {
       <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
         <div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm">
           <div className="space-x-4">
-            <Link href="/">Home</Link>
+            <Link href="/home">Home</Link>
             <Link href="/inventory">Inventory</Link>
           </div>
           {isSupabaseConnected && <AuthButton />}
