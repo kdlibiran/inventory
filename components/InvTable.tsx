@@ -82,13 +82,21 @@ export default function InvTable({ data }: { data: Item[] }) {
               <TableRow key={item.id}>
                 <TableCell className="font-medium">
                   <Dialog>
-                    <DialogTrigger className="text-left font-medium">
+                    <DialogTrigger className="text-left font-medium underline underline-offset-4">
                       {item.name}
                     </DialogTrigger>
 
                     <DialogContent>
                       <DialogHeader>
-                        <DialogTitle>{item.name} History</DialogTitle>
+                        <DialogTitle>
+                          <div className="flex justify-between w-[87.4%]">
+                            {item.name}{" "}
+                            <button className="bg-red-500 text-white rounded-md py-2 px-4">
+                              {" "}
+                              Delete Item{" "}
+                            </button>
+                          </div>
+                        </DialogTitle>
                       </DialogHeader>
                       <Tabs defaultValue="Purchase" className="w-[400px]">
                         <TabsList className="grid w-full grid-cols-2">
@@ -98,7 +106,7 @@ export default function InvTable({ data }: { data: Item[] }) {
                         <TabsContent value="Purchase">
                           <Card>
                             <CardHeader>
-                              <CardTitle>Purchase History</CardTitle>
+                              <CardTitle>Purchase History </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-2">
                               <PurchaseHistory
@@ -143,6 +151,7 @@ export default function InvTable({ data }: { data: Item[] }) {
                         <DialogTitle>Purchase Item</DialogTitle>
                       </DialogHeader>
                       <DialogDescription>Item: {item.name}</DialogDescription>
+
                       <PurchaseItem id={item.id} />
                     </DialogContent>
                   </Dialog>

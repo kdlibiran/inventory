@@ -16,19 +16,19 @@ export default async function Index() {
   const isSupabaseConnected = canInitSupabaseClient();
 
   return (
-    <div className="flex-1 w-full flex flex-col items-center h-screen">
-      <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-        <div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm">
+    <div className="flex h-screen w-full flex-1 flex-col items-center">
+      <nav className="border-b-foreground/10 flex h-16 w-full justify-center border-b">
+        <div className="flex w-full max-w-4xl items-center justify-between p-3 text-sm">
           <div className="space-x-4">
             <Link href="/">Inventory System</Link>
           </div>
           {isSupabaseConnected && <AuthButton />}
         </div>
       </nav>
-      <div className="bg-gray-100 h-full flex items-center justify-center">
+      <div className="flex h-full items-center justify-center bg-gray-100">
         <div className="text-center">
-          <h1 className="text-4xl font-bold mb-4">Inventory Management</h1>
-          <p className="text-gray-600 mb-6 text-lg">
+          <h1 className="mb-4 text-4xl font-bold">Inventory Management</h1>
+          <p className="mb-6 text-lg text-gray-600">
             Streamline your business operations with our Inventory Management
             System. Keep track of products, know when to restock, know when to
             order more, and know when products will expire.
